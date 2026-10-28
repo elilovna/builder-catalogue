@@ -15,6 +15,9 @@ import { avatarHex, colourShares } from "@/lib/brick-colours";
 import { BuilderHeader } from "./builder-header";
 import { SetList } from "./set-list";
 
+// Next.js's dev-only instant check reports notFound() for an unknown name as an error.
+export const instant = false;
+
 export const generateStaticParams = async () => {
   const usernames = await getUsernames();
   return usernames.map((username) => ({ username }));

@@ -17,6 +17,9 @@ import { PieceTable } from "./piece-table";
 import { SetHeader } from "./set-header";
 import { SetTiles } from "./set-tiles";
 
+// Next.js's dev-only instant check reports notFound() for an unknown name as an error.
+export const instant = false;
+
 export const generateStaticParams = async () => {
   const [usernames, sets] = await Promise.all([
     getUsernames(),
