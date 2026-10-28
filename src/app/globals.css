@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/* Dark styles only apply inside a .dark element. The design is light only, so they
+   never apply, not even when the visitor's system is in dark mode. */
+@custom-variant dark (&:is(.dark *));
+
+/* Design tokens from builder-catalogue-design v5.1. */
+:root {
+  --radius: 0.625rem; /* 10px controls. rounded-sm is 6px (chips), rounded-xl 14px (cards). */
+
+  /* Surfaces and text */
+  --background: #f3f4f6; /* page ground */
+  --foreground: #141a24; /* ink: text and the dark header */
+  --card: #ffffff;
+  --card-foreground: #141a24;
+  --popover: #ffffff;
+  --popover-foreground: #141a24;
+  --muted: #eef0f3;
+  --muted-foreground: #5b6573; /* 5.9:1 on white */
+  --border: #e2e6eb;
+  --input: #cbd1d9;
+
+  /* Actions */
+  --primary: #141a24; /* dark buttons */
+  --primary-foreground: #ffffff;
+  --secondary: #eef0f3;
+  --secondary-foreground: #141a24;
+  --accent: #e9ecf0; /* hover background */
+  --accent-foreground: #141a24;
+  --destructive: #a32015;
+  --ring: #141a24; /* focus ring on light surfaces */
+
+  /* Brand and links */
+  --brand: #f2cd37; /* fills, and the focus ring on dark surfaces. Never text. */
+  --link: #0055bf; /* 6.9:1 on white */
+
+  /* Status: each text colour passes 4.5:1 on its background */
+  --ready: #1e7a46;
+  --ready-bg: #e3f3e9;
+  --almost: #8a5a00;
+  --almost-bg: #fbf0d2;
+  --almost-bar: #a87200; /* 3.4:1 on the meter track */
+  --short: #a32015;
+  --short-bg: #fbe8e5;
+  --meter: #e6e9ee; /* the empty part of a progress bar */
+
+  /* On the dark header */
+  --on-dark-muted: #c7ced8; /* secondary text, 11:1 on ink */
+  --on-dark-subtle: #9aa6b6; /* labels, 7:1 on ink */
+  --ready-on-dark: #bbe90b; /* the ready count */
+}
+
+/* Turns each token into Tailwind classes: --color-ready gives text-ready, bg-ready, border-ready. */
+@theme inline {
+  --font-sans: var(--font-instrument-sans);
+  --font-heading: var(--font-bricolage-grotesque);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-link: var(--link);
+  --color-ready: var(--ready);
+  --color-ready-bg: var(--ready-bg);
+  --color-almost: var(--almost);
+  --color-almost-bg: var(--almost-bg);
+  --color-almost-bar: var(--almost-bar);
+  --color-short: var(--short);
+  --color-short-bg: var(--short-bg);
+  --color-meter: var(--meter);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --color-on-dark-subtle: var(--on-dark-subtle);
+  --color-ready-on-dark: var(--ready-on-dark);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* The design's dark header: ink with a faint grid of brick studs. */
+@utility bg-studs {
+  background-color: var(--foreground);
+  background-image: radial-gradient(
+    circle,
+    rgb(255 255 255 / 0.055) 0 5px,
+    transparent 5.5px
+  );
+  background-size: 40px 40px;
+  background-position: 20px 20px;
+}
+
+/* A plastic brick seen from above: studs on top and a darker bottom edge. It needs --stud
+   (one stud, gap included) and --gap (the seam between bricks). The studs start half a gap
+   early, so each one sits in the middle of its 1 by 1 cell. */
+@utility brick {
+  border-radius: calc(var(--stud) * 0.16);
+  background-image: radial-gradient(
+    circle closest-side,
+    rgb(255 255 255 / 0.4) 0 44%,
+    rgb(0 0 0 / 0.16) 47% 58%,
+    transparent 61%
+  );
+  background-size: var(--stud) var(--stud);
+  background-position: calc(var(--gap) / -2) calc(var(--gap) / -2);
+  box-shadow:
+    inset 0 calc(var(--stud) * -0.12) 0 rgb(0 0 0 / 0.22),
+    var(--brick-shadow, 0 4px 10px rgb(0 0 0 / 0.35));
+}
+
+/* The 404 bricks. Each one comes down from above, bigger because it is closer, and clicks
+   into place. The missing piece clicks into its hole, wobbles, then falls off.
+   "backwards": a brick stays hidden until its turn, and hover can move it afterwards. */
+@theme {
+  --animate-brick-snap: brick-snap 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)
+    backwards;
+  --animate-brick-fall: brick-fall 1.6s backwards;
+
+  @keyframes brick-snap {
+    from {
+      scale: 1.8;
+      opacity: 0;
+    }
+  }
+
+  @keyframes brick-fall {
+    0% {
+      translate: var(--from-x) var(--from-y);
+      rotate: 0deg;
+      scale: 1.8;
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    28% {
+      translate: var(--from-x) var(--from-y);
+      rotate: 0deg;
+      scale: 1;
+      opacity: 1;
+    }
+    52% {
+      translate: var(--from-x) var(--from-y);
+      rotate: 0deg;
+    }
+    58% {
+      translate: var(--from-x) var(--from-y);
+      rotate: -10deg;
+    }
+    64% {
+      translate: var(--from-x) var(--from-y);
+      rotate: 8deg;
+      animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+    }
+    100% {
+      translate: 0 0;
+      rotate: var(--tilt);
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+  /* A visible 3px focus ring. Ink on light surfaces; the dark header switches --ring to yellow. */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
