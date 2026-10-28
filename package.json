@@ -42,5 +42,8 @@
     "vitest": "5.0.5"
   },
   "trustedDependencies": [],
+  "engines": {
+    "node": "24.x"
+  },
   "packageManager": "bun@1.4.4"
 }
