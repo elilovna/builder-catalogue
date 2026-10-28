@@ -1,0 +1,6 @@
+[install]
+# Each package sees only its own dependencies, so the app cannot import a package
+# that is missing from package.json.
+linker = "isolated"
+# `bun add` saves "1.2.3", not "^1.2.3".
+exact = true

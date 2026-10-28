@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": ["**", "!test/fixtures"]
+  },
+  "formatter": { "indentStyle": "space" },
+  "tailwind": { "stylesheet": "./src/app/globals.css" },
+  "linter": {
+    "rules": {
+      "preset": "none",
+      "nursery": {
+        "useTailwindSortedClasses": { "level": "error", "fix": "safe" }
+      }
+    }
+  },
+  "assist": { "enabled": false }
+}

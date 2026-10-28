@@ -1,0 +1,78 @@
+# Every check, on each push to main and on each pull request.
+# The steps run in order and stop at the first one that fails.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch cancels the run that is still going.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# The workflow only reads the code.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # Bun installs the packages and runs the scripts. The version comes from "packageManager" in package.json.
+      - uses: oven-sh/setup-bun@v2
+
+      # Next.js, Vitest and Playwright run on Node.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # Fails when bun.lock does not match package.json, instead of quietly updating it.
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Format check
+        run: bun run format:check
+
+      # Vitest. `bun test` would start Bun's own test runner instead.
+      - name: Unit tests
+        run: bun run test
+
+      # Keeps Next.js's build cache between runs, as the Next.js CI build caching guide shows.
+      - uses: actions/cache@v6
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('bun.lock') }}-${{ hashFiles('src/**') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('bun.lock') }}-
+
+      # Prerenders every page, so this step calls the live catalogue API.
+      - name: Build
+        run: bun run build
+
+      # The browser Playwright drives, with the system libraries it needs on Linux.
+      - name: Install Playwright's Chromium
+        run: bunx playwright install --with-deps chromium
+
+      # Starts the build from the step above, then runs the journeys, the 404s and axe on it.
+      - name: End-to-end tests
+        run: bunx playwright test
+
+      # The report, with a trace of each failed test, can be downloaded from the run's page.
+      - name: Upload the Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
