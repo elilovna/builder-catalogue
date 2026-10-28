@@ -10,6 +10,14 @@ const PAGES = [
   "/builders/nobody123",
 ];
 
+// The widest piece tables: two-digit shortfalls, a finished set (it opens on All, with
+// "Covered" and the longest colour names), and the All view with "Covered".
+const SET_PAGES = [
+  "/builders/brickfan35/sets/peacock-farm",
+  "/builders/brickfan35/sets/undersea-monster",
+  "/builders/landscape-artist/sets/tropical-island?show=all",
+];
+
 test.describe("axe", () => {
   for (const path of PAGES) {
     test(`${path} has no WCAG A or AA violations`, async ({ page }) => {
@@ -65,6 +73,22 @@ test.describe("on a phone", () => {
         );
         expect(pageWidth).toBeLessThanOrEqual(width);
       });
+
+      for (const path of SET_PAGES) {
+        test(`${path} shows the whole piece table, Short column included`, async ({
+          page,
+        }) => {
+          await page.goto(path);
+          const table = page.getByRole("region", { name: "Pieces table" });
+          await expect(
+            table.getByRole("columnheader", { name: "Short" }),
+          ).toBeVisible();
+
+          expect(
+            await table.evaluate((box) => box.scrollWidth <= box.clientWidth),
+          ).toBe(true);
+        });
+      }
     });
   }
 

@@ -91,14 +91,14 @@ export const PieceTable = async ({
               >
                 Piece
               </th>
-              <th scope="col" className="py-2 pl-3 text-right font-semibold">
+              <th scope="col" className="py-2 pl-2 text-right font-semibold">
                 Need
               </th>
-              <th scope="col" className="py-2 pl-3 text-right font-semibold">
+              <th scope="col" className="py-2 pl-2 text-right font-semibold">
                 Have
               </th>
               {showShort && (
-                <th scope="col" className="py-2 pl-3 text-right font-semibold">
+                <th scope="col" className="py-2 pl-2 text-right font-semibold">
                   Short
                 </th>
               )}
@@ -125,19 +125,19 @@ export const PieceTable = async ({
                       />
                     </span>
                   </td>
-                  <td className="py-2 pl-3 text-right tabular-nums">
+                  <td className="py-2 pl-2 text-right tabular-nums">
                     {line.need}
                   </td>
                   <td
                     className={cn(
-                      "py-2 pl-3 text-right tabular-nums",
+                      "py-2 pl-2 text-right tabular-nums",
                       line.have === 0 && "text-muted-foreground",
                     )}
                   >
                     {line.have}
                   </td>
                   {showShort && (
-                    <td className="py-2 pl-3 text-right">
+                    <td className="py-2 pl-2 text-right">
                       {line.short > 0 ? (
                         <Badge variant="short" className="tabular-nums">
                           <span aria-hidden="true">−{line.short}</span>

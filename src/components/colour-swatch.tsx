@@ -16,7 +16,7 @@ type ColourSwatchProps = {
 };
 
 export const ColourSwatch = ({ name, hex }: ColourSwatchProps) => (
-  <span className="inline-flex items-center gap-2 whitespace-nowrap">
+  <span className="inline-flex items-center gap-2">
     <Swatch hex={hex} />
     {name}
   </span>
