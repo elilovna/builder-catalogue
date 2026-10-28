@@ -43,7 +43,6 @@ export const BuilderCommunity = async ({
     return null;
   }
 
-  // A to Z, so each builder keeps their place whoever is chosen. Switching keeps the reading.
   const options = builders
     .map((option) => ({
       username: option.username,

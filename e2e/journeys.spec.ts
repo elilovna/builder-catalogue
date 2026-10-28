@@ -11,7 +11,6 @@ test("the home page counts the builders, sets, colours and pieces", async ({
     "Colours in use",
     "Pieces tracked",
   ]);
-  // 11 colours: the ones collections and sets use, not the API's list of 73.
   await expect(page.getByRole("definition")).toHaveText([
     "11",
     "15",
@@ -50,7 +49,6 @@ test("brickfan35 can build car-wash, castaway and undersea-monster", async ({
     "brickfan35 owns every piece for this set",
   );
 
-  // The filter lives in the URL, so Back returns to the same filtered list.
   await page.goBack();
   await expect(page).toHaveURL("/builders/brickfan35?show=ready");
   await expect(cards).toHaveCount(3);
@@ -64,14 +62,12 @@ test("peacock-farm lists the pieces brickfan35 is missing", async ({
     "brickfan35 owns 466 of 690 pieces",
   );
 
-  // An incomplete set shows its missing lines first: 63 of 142, plus the header row.
   const table = page.getByRole("table", { name: "Pieces" });
   await expect(table.getByRole("row")).toHaveCount(64);
 
   const filters = page.getByRole("navigation", {
     name: "Which pieces to show",
   });
-  // The other 79 lines are covered.
   await filters.getByRole("link", { name: /^Covered/ }).click();
   await expect(page).toHaveURL(
     "/builders/brickfan35/sets/peacock-farm?show=covered",
@@ -121,7 +117,6 @@ test("stretch 2: any builder can be the designer", async ({ page }) => {
     }),
   ).toBeVisible();
 
-  // The other reading keeps the chosen builder.
   const owned = page.getByRole("checkbox", {
     name: /^dr_crocodile must own the pieces too/,
   });
@@ -140,7 +135,6 @@ test("stretch 3: dr_crocodile can build coffee-bar by swapping colours", async (
 }) => {
   await page.goto("/community");
 
-  // The page opens on megabuilder99, who gains nothing from swaps.
   await expect(
     page.getByRole("heading", {
       name: "megabuilder99 can’t build any more sets by swapping colours",
@@ -162,9 +156,7 @@ test("stretch 3: dr_crocodile can build coffee-bar by swapping colours", async (
 const NOT_FOUND = [
   ["/builders/nobody123", "No builder called nobody123"],
   ["/builders/brickfan35/sets/nope", "No set called nope"],
-  // The builder is checked first, so a wrong builder is named even on a set address.
   ["/builders/nobody123/sets/car-wash", "No builder called nobody123"],
-  // Any other unknown address gets the site-wide page.
   ["/nope", "Page not found"],
 ] as const;
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { getBuilders, getCatalogSets, getColourNames } from "@/catalog/queries";
+import { PageHeader } from "@/components/page-header";
 
 import { BuilderCommunity } from "./builder-community";
 
@@ -16,17 +17,9 @@ const CommunityPage = async ({ searchParams }: PageProps<"/community">) => {
 
   return (
     <>
-      {/* Only the page name, like the home page's "Builders": the cards explain their own answers. */}
-      <div className="bg-studs text-white">
-        <div className="mx-auto w-full max-w-6xl px-4 pt-6 pb-8">
-          <h1 className="text-[clamp(1.9rem,1.3rem+2.2vw,3rem)] leading-[1.1] font-extrabold">
-            Community
-          </h1>
-        </div>
-      </div>
+      <PageHeader title="Community" />
 
       <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 pt-8 pb-16">
-        {/* The builder comes from the URL, which only a request has, so the heading above is prerendered without it. */}
         <Suspense
           fallback={
             <div

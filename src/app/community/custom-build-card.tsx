@@ -50,7 +50,6 @@ export const CustomBuildCard = ({
         <p className="font-mono text-[13px] tracking-[0.06em] text-link uppercase">
           Custom build budget
         </p>
-        {/* Read out when it changes: the page title stays "Community", so Next announces nothing after a tap. */}
         <h2
           id="custom-build-heading"
           aria-live="polite"
@@ -66,7 +65,6 @@ export const CustomBuildCard = ({
         </h2>
       </div>
 
-      {/* A grid stretches its children; the wrapper keeps the clickable label as wide as its text. */}
       <div>
         <OwnedCheckbox
           designer={designer.username}
@@ -78,7 +76,6 @@ export const CustomBuildCard = ({
       </div>
 
       <div className="grid gap-3">
-        {/* "Of the 10" is the brief's rule: at least half of the others. The checkbox already says whether the designer must own the pieces too. */}
         <p className="max-w-[60ch] text-foreground/80">
           {budget.group.length} of the {others.length} other builders can build
           it:

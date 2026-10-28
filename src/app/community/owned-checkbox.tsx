@@ -43,7 +43,6 @@ export const OwnedCheckbox = ({
           {designer}
         </span>{" "}
         must own the pieces too{" "}
-        {/* Like a shop filter's count: what you get with the box ticked, so it stays the same in both states. */}
         <span className="ml-1 rounded-full bg-foreground/10 px-2 py-0.5 font-mono text-xs whitespace-nowrap tabular-nums">
           {formatNumber(count)}
           <span className="sr-only"> pieces</span>

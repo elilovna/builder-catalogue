@@ -55,7 +55,6 @@ const SetPage = async ({
   ]);
   const set = sets.find((candidate) => candidate.name === setName);
 
-  // A missing builder already got their own 404 from ../layout.tsx. Checking again tells TypeScript.
   if (!builder || !set) {
     notFound();
   }
@@ -107,7 +106,6 @@ const SetPage = async ({
             </Suspense>
           </div>
 
-          {/* Stretch goal 1: only an incomplete set needs help from others. */}
           {status.kind === "incomplete" && (
             <aside className="min-w-0 flex-[1_1_340px]">
               <Suspense

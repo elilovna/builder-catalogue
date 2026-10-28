@@ -33,7 +33,6 @@ describe("sharedPieces", () => {
 
 describe("customBuildBudget", () => {
   it("picks the group whose shared pieces add up to the most", () => {
-    // Half of 4 builders is 2. Amy and Ben share 3 + 2 = 5 pieces; no other pair shares more.
     const budget = customBuildBudget([amy, ben, cat, dan], 0.5);
 
     expect(budget.group.map((member) => member.username)).toEqual([

@@ -39,7 +39,6 @@ export const PieceTable = async ({
   const covered = lines.filter((line) => line.short === 0);
   const show = parseShow((await searchParams).show, missing.length);
   const visible = { missing, covered, all: lines }[show];
-  // Under the Covered tab every line would say "Covered", so the column is left out.
   const showShort = show !== "covered";
 
   return (
@@ -76,11 +75,6 @@ export const PieceTable = async ({
         />
       </div>
 
-      {/* On a very narrow screen (320 px, or a zoomed-in phone) the table can still be wider than
-          the card. It scrolls sideways in this box instead of making the whole page scroll.
-          The box takes focus so a keyboard can scroll it.
-          `relative` keeps the sr-only "11 short" spans inside the box: they are absolutely
-          positioned, and without it they would still stretch the page. */}
       <div
         role="region"
         aria-label="Pieces table"
@@ -88,7 +82,6 @@ export const PieceTable = async ({
         className="relative overflow-x-auto"
       >
         <table aria-labelledby="pieces-heading" className="w-full text-[15px]">
-          {/* aria-sort tells a screen reader the order that sighted users see: by piece. */}
           <thead>
             <tr className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
               <th
@@ -114,16 +107,11 @@ export const PieceTable = async ({
           <tbody>
             {visible.map((line) => {
               const { designId, colourCode } = parsePieceKey(line.key);
-              // On a wide screen the numbers sit far from the piece; the hover colour keeps the
-              // eye on one row. Tailwind only applies hover on devices that can hover, not phones.
               return (
                 <tr
                   key={line.key}
                   className="border-t border-meter hover:bg-accent"
                 >
-                  {/* A piece is a shape in a colour, so both share one cell. On a phone the
-                      colour goes under the ID; on wider screens the fixed-width ID keeps the
-                      colours lined up like their own column. */}
                   <td className="py-2 pr-3">
                     <span className="flex flex-col gap-0.5 leading-tight sm:flex-row sm:items-center sm:gap-3">
                       <span className="font-mono sm:min-w-[6ch]" translate="no">
@@ -152,7 +140,6 @@ export const PieceTable = async ({
                     <td className="py-2 pl-3 text-right">
                       {line.short > 0 ? (
                         <Badge variant="short" className="tabular-nums">
-                          {/* Screen readers would say "minus 11"; they hear "11 short" instead. */}
                           <span aria-hidden="true">−{line.short}</span>
                           <span className="sr-only">{line.short} short</span>
                         </Badge>

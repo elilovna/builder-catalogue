@@ -112,9 +112,6 @@ export const SetHeader = ({
               {setName}
             </h1>
 
-            {/* At least two lines tall, like the builder page's sentence, so both headers
-                have the same height. No completion bar under it: the "Pieces owned" tile
-                right below the header already shows it. */}
             <p className="min-h-[2lh] max-w-[56ch] text-lg text-on-dark-muted">
               <GapSentence
                 username={username}

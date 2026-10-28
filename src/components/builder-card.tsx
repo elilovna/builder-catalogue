@@ -32,7 +32,6 @@ export const BuilderCard = <Href extends string>({
           className="font-mono text-[15px] font-semibold break-words"
           translate="no"
         >
-          {/* The link covers the whole card, but its name is just the username. */}
           <Link
             href={href}
             className="after:absolute after:inset-0 focus-visible:outline-none"

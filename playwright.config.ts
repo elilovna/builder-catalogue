@@ -6,7 +6,6 @@ export default defineConfig({
   testDir: "e2e",
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
-  // The live API can be slow for a moment. One retry on CI keeps that from failing a run.
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
   use: {

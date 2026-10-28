@@ -10,19 +10,16 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
-// Body copy, labels and controls.
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-instrument-sans",
 });
 
-// Headings and big numbers.
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage-grotesque",
 });
 
-// Identifiers from the API: usernames, set names, piece IDs.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",

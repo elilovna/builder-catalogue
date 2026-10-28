@@ -19,28 +19,21 @@ const UPRIGHT =
 export const BudgetPieces = ({ pieces, colourNames }: BudgetPiecesProps) => {
   const { colours, shapes } = pieceMatrix(pieces);
   const total = colours.reduce((sum, colour) => sum + colour.pieces, 0);
-  // On a phone the last colour is the last column, since Total is left off, so it keeps clear of the box's edge.
   const edge = (index: number) =>
     index === colours.length - 1 ? "max-sm:pr-3" : undefined;
 
   return (
     <details className="group/pieces min-w-0 rounded-lg border">
-      {/* Open, a line marks where the table starts, so the column names do not read as part of the summary.
-        The focus ring sits inside the box: outside it, it looked like a separate button with the table hanging below. */}
       <summary className="cursor-pointer rounded-lg px-4 py-3 font-semibold group-open/pieces:rounded-b-none group-open/pieces:border-b hover:bg-accent focus-visible:-outline-offset-3">
         See the pieces
       </summary>
 
-      {/* Scrolls sideways on a narrow phone instead of the whole page, like the set page's table.
-        Relative, so it also clips the screen-reader-only "0"s: they are absolute, and without a
-        positioned box they stick out of it and make the whole page scroll sideways. */}
       <div
         role="region"
         aria-label="Pieces in the budget"
         tabIndex={0}
         className="relative overflow-x-auto pb-2"
       >
-        {/* Equal columns from a laptop up, so the numbers sit evenly however long a colour's name is. Narrower screens size the columns by their content, or the piece IDs would not fit. */}
         <table className="w-full text-sm tabular-nums sm:text-[15px] lg:table-fixed">
           <thead>
             <tr className="text-[13px] font-semibold">
@@ -62,7 +55,6 @@ export const BudgetPieces = ({ pieces, colourNames }: BudgetPiecesProps) => {
                     edge(index),
                   )}
                 >
-                  {/* On a phone the swatch goes under the name, so the swatches line up right above the numbers. */}
                   <span className="ml-auto flex flex-col-reverse items-end gap-1.5 sm:flex-col">
                     <Swatch hex={brickHex(colour.colourCode)} />
                     <span className={UPRIGHT}>
@@ -72,7 +64,6 @@ export const BudgetPieces = ({ pieces, colourNames }: BudgetPiecesProps) => {
                   </span>
                 </th>
               ))}
-              {/* Each shape's total is left off on a phone to make room for every colour: a designer picks a shape and a colour, and the grand total is the heading. */}
               <th
                 scope="col"
                 className="py-2 pr-4 pl-2 text-right align-bottom font-mono text-xs tracking-wide text-muted-foreground uppercase max-sm:hidden"
@@ -104,7 +95,6 @@ export const BudgetPieces = ({ pieces, colourNames }: BudgetPiecesProps) => {
                       {count ? (
                         formatNumber(count)
                       ) : (
-                        // A dash to the eye, a 0 to a screen reader.
                         <>
                           <span
                             aria-hidden="true"

@@ -16,7 +16,6 @@ const fetchJson = async (apiPath: string): Promise<unknown> => {
 const save = (file: string, json: unknown) =>
   writeFile(path.join(OUT_DIR, file), `${JSON.stringify(json, null, 2)}\n`);
 
-// Only the ids are read here. The tests check both files against the Zod schemas.
 type Listing = { id: string };
 const { Users } = (await fetchJson("/api/users")) as { Users: Listing[] };
 const { Sets } = (await fetchJson("/api/sets")) as { Sets: Listing[] };

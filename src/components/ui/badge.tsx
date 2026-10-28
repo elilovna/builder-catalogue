@@ -18,7 +18,6 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
-        // Build status chips. Each one always shows a word or a number, never colour alone.
         ready: "bg-ready-bg font-semibold text-ready",
         almost: "bg-almost-bg font-semibold text-almost",
         far: "bg-muted font-semibold text-muted-foreground",

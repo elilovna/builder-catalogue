@@ -37,7 +37,6 @@ export const ColourSwapsCard = ({
         <p className="font-mono text-[13px] tracking-[0.06em] text-link uppercase">
           Colour swaps
         </p>
-        {/* Read out when another builder is chosen, like the budget card's heading. */}
         <h2
           id="colour-swaps-heading"
           aria-live="polite"

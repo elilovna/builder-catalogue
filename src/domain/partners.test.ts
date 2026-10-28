@@ -16,8 +16,6 @@ const builder = (username: string, inventory: PieceCounts): Builder => ({
   inventory,
 });
 
-// The set needs 4 × 3023 Blue and 2 × 4286 Red. The owner has 3 × 3023 Blue,
-// so the gap is 1 × 3023 Blue and 2 × 4286 Red: 3 pieces.
 const set = counts(["3023", 7, 4], ["4286", 5, 2]);
 const owner = counts(["3023", 7, 3]);
 
@@ -74,7 +72,6 @@ describe("completingPairs", () => {
   });
 
   it("adds both partners' pieces on the same line", () => {
-    // 2 × 4286 Red are missing, and each partner has one.
     const pairs = completingPairs(set, owner, [
       builder("one-red", counts(["3023", 7, 1], ["4286", 5, 1])),
       builder("other-red", counts(["4286", 5, 1])),
@@ -103,7 +100,6 @@ describe("completingPairs", () => {
 });
 
 describe("pickGroup", () => {
-  // Six different pieces, one of each, and the owner has none of them.
   const six = counts(
     ["3023", 1, 1],
     ["3023", 2, 1],
@@ -131,7 +127,6 @@ describe("pickGroup", () => {
   });
 
   it("does not count a picked partner's pieces twice", () => {
-    // 4 are missing and "half" owns 2: they add 2 once, not 2 and then 2 more.
     const group = pickGroup(counts(["3023", 26, 4]), counts(), [
       builder("half", counts(["3023", 26, 2])),
     ]);
@@ -160,7 +155,6 @@ describe("pickGroup", () => {
         "four-to-six",
         counts(["3023", 4, 1], ["3023", 5, 1], ["3023", 6, 1]),
       ),
-      // Has the most, so greedy takes it first, but it is in no pair that completes the set.
       builder(
         "middle",
         counts(["3023", 1, 1], ["3023", 2, 1], ["3023", 4, 1], ["3023", 5, 1]),

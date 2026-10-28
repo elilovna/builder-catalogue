@@ -20,7 +20,6 @@ test.describe("axe", () => {
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
         .analyze();
 
-      // Each rule with the elements it failed on, so a failure says what to fix.
       expect(
         violations.map(
           (violation) =>
@@ -34,8 +33,6 @@ test.describe("axe", () => {
 test.describe("on a phone", () => {
   test.skip(({ isMobile }) => !isMobile, "Only the phone project");
 
-  // 412 px is the Pixel 7's own width, 375 px a small iPhone, and 320 px the width
-  // WCAG's reflow rule (1.4.10) asks a page to fit.
   for (const width of [320, 375, 412]) {
     test.describe(`${width} px wide`, () => {
       test.use({ viewport: { width, height: 800 } });
@@ -57,7 +54,6 @@ test.describe("on a phone", () => {
       test("a 404 for a long name wraps it instead of widening the page", async ({
         page,
       }) => {
-        // No space or hyphen in it, so only a break inside the name can make it fit.
         const name = "nobody".repeat(8);
         await page.goto(`/builders/${name}`);
         await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -80,7 +76,6 @@ test.describe("on a phone", () => {
     const pieces = page.getByRole("region", { name: "Pieces in the budget" });
     await expect(pieces).toBeVisible();
 
-    // megabuilder99's budget has 8 colours, as many as any builder's, and they all fit: the box does not scroll.
     expect(
       await pieces.evaluate((box) => box.scrollWidth <= box.clientWidth),
     ).toBe(true);
@@ -144,7 +139,6 @@ test.describe("keyboard only", () => {
       "car-wash",
     );
 
-    // The piece table's scroll box takes focus, so a keyboard can scroll it on a phone.
     await tabTo(page, page.getByRole("region", { name: "Pieces table" }));
   });
 
@@ -158,7 +152,6 @@ test.describe("keyboard only", () => {
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL("/community?builder=wizard13&budget=others");
 
-    // Focus stays put, so the next Tab carries on from here, not from the top of the page.
     await expect(wizard).toBeFocused();
     await expect(wizard).toHaveAttribute("aria-current", "page");
   });

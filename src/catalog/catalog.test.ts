@@ -20,7 +20,6 @@ import { combine } from "@/domain/test-utils";
 import { toBuilder, toCatalogSet } from "./mappers";
 import { SetDetailSchema, UserDetailSchema } from "./schemas";
 
-// Data recorded from the real API with `bun run fixtures:record`.
 const readFixture = (file: string): unknown =>
   JSON.parse(
     readFileSync(path.join(process.cwd(), "test", "fixtures", file), "utf8"),
@@ -54,7 +53,6 @@ describe("recorded API data", () => {
   });
 
   it("turns an inventory colour sent as text into a number", () => {
-    // The API sends { color: "155", count: 9 } for brickfan35's piece 3710.
     expect(findBuilder("brickfan35").inventory.get("3710:155")).toBe(9);
   });
 
@@ -149,7 +147,6 @@ describe("stretch 1: landscape-artist and tropical-island", () => {
 
 describe("stretch 1: when nobody completes a set alone", () => {
   const lunarNewYear = findSet("lunar-new-year").required;
-  // Best first, as the set page passes them, so ties go to whoever is closest alone.
   const partnersOf = (owner: Builder, required: PieceCounts) =>
     rankPartners(
       required,
@@ -313,7 +310,6 @@ describe("stretch 3: dr_crocodile with colour swaps", () => {
         }),
       );
 
-      // No two colours became one, so every line is still there on its own.
       expect(recoloured.size).toBe(set.required.size);
       expect(canBuild(recoloured, drCrocodile.inventory)).toBe(true);
     }

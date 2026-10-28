@@ -1,56 +1,47 @@
 @import "tailwindcss";
 
-/* Dark styles only apply inside a .dark element. The design is light only, so they
-   never apply, not even when the visitor's system is in dark mode. */
 @custom-variant dark (&:is(.dark *));
 
-/* Design tokens from builder-catalogue-design v5.1. */
 :root {
-  --radius: 0.625rem; /* 10px controls. rounded-sm is 6px (chips), rounded-xl 14px (cards). */
+  --radius: 0.625rem;
 
-  /* Surfaces and text */
-  --background: #f3f4f6; /* page ground */
-  --foreground: #141a24; /* ink: text and the dark header */
+  --background: #f3f4f6;
+  --foreground: #141a24;
   --card: #ffffff;
   --card-foreground: #141a24;
   --popover: #ffffff;
   --popover-foreground: #141a24;
   --muted: #eef0f3;
-  --muted-foreground: #5b6573; /* 5.9:1 on white */
+  --muted-foreground: #5b6573;
   --border: #e2e6eb;
   --input: #cbd1d9;
 
-  /* Actions */
-  --primary: #141a24; /* dark buttons */
+  --primary: #141a24;
   --primary-foreground: #ffffff;
   --secondary: #eef0f3;
   --secondary-foreground: #141a24;
-  --accent: #e9ecf0; /* hover background */
+  --accent: #e9ecf0;
   --accent-foreground: #141a24;
   --destructive: #a32015;
-  --ring: #141a24; /* focus ring on light surfaces */
+  --ring: #141a24;
 
-  /* Brand and links */
-  --brand: #f2cd37; /* fills, and the focus ring on dark surfaces. Never text. */
-  --link: #0055bf; /* 6.9:1 on white */
+  --brand: #f2cd37;
+  --link: #0055bf;
 
-  /* Status: each text colour passes 4.5:1 on its background */
   --ready: #1e7a46;
   --ready-bg: #e3f3e9;
   --almost: #8a5a00;
   --almost-bg: #fbf0d2;
-  --almost-bar: #a87200; /* 3.4:1 on the meter track */
+  --almost-bar: #a87200;
   --short: #a32015;
   --short-bg: #fbe8e5;
-  --meter: #e6e9ee; /* the empty part of a progress bar */
+  --meter: #e6e9ee;
 
-  /* On the dark header */
-  --on-dark-muted: #c7ced8; /* secondary text, 11:1 on ink */
-  --on-dark-subtle: #9aa6b6; /* labels, 7:1 on ink */
-  --ready-on-dark: #bbe90b; /* the ready count */
+  --on-dark-muted: #c7ced8;
+  --on-dark-subtle: #9aa6b6;
+  --ready-on-dark: #bbe90b;
 }
 
-/* Turns each token into Tailwind classes: --color-ready gives text-ready, bg-ready, border-ready. */
 @theme inline {
   --font-sans: var(--font-instrument-sans);
   --font-heading: var(--font-bricolage-grotesque);
@@ -98,7 +89,6 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* The design's dark header: ink with a faint grid of brick studs. */
 @utility bg-studs {
   background-color: var(--foreground);
   background-image: radial-gradient(
@@ -110,9 +100,6 @@
   background-position: 20px 20px;
 }
 
-/* A plastic brick seen from above: studs on top and a darker bottom edge. It needs --stud
-   (one stud, gap included) and --gap (the seam between bricks). The studs start half a gap
-   early, so each one sits in the middle of its 1 by 1 cell. */
 @utility brick {
   border-radius: calc(var(--stud) * 0.16);
   background-image: radial-gradient(
@@ -128,9 +115,6 @@
     var(--brick-shadow, 0 4px 10px rgb(0 0 0 / 0.35));
 }
 
-/* The 404 bricks. Each one comes down from above, bigger because it is closer, and clicks
-   into place. The missing piece clicks into its hole, wobbles, then falls off.
-   "backwards": a brick stays hidden until its turn, and hover can move it afterwards. */
 @theme {
   --animate-brick-snap: brick-snap 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)
     backwards;
@@ -193,7 +177,6 @@
   h4 {
     @apply font-heading;
   }
-  /* A visible 3px focus ring. Ink on light surfaces; the dark header switches --ring to yellow. */
   :focus-visible {
     outline: 3px solid var(--ring);
     outline-offset: 2px;

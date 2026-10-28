@@ -77,7 +77,6 @@ describe("countColours", () => {
     const amy = counts(["3023", 5, 4], ["3023", 1, 2]);
     const ben = counts(["4286", 5, 3], ["3001", 155, 1]);
 
-    // Red (5) is in both, so 5, 1 and 155 make three.
     expect(countColours([amy, ben])).toBe(3);
   });
 

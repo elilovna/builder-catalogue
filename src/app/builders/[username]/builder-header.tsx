@@ -81,7 +81,6 @@ export const BuilderHeader = ({
             <span className="min-w-0 break-words">{username}</span>
           </h1>
 
-          {/* At least two lines tall, like the set page's sentence, so both headers have the same height. */}
           <p className="min-h-[2lh] max-w-[56ch] text-lg text-on-dark-muted">
             {username} can build{" "}
             <b className="font-semibold text-white tabular-nums">

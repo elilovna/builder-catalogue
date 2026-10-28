@@ -54,7 +54,6 @@ export const SetCard = <Href extends string>({
               className="font-mono text-base font-semibold break-words"
               translate="no"
             >
-              {/* The link covers the whole card (after:inset-0), but its name is just the set name. */}
               <Link
                 href={href}
                 className="after:absolute after:inset-0 focus-visible:outline-none"
@@ -81,7 +80,6 @@ export const SetCard = <Href extends string>({
           />
         </div>
 
-        {/* A ready card ends at the bar: the "Ready" chip already says nothing is missing. */}
         {status.kind === "incomplete" && (
           <p className="text-sm">
             {formatNumber(needed - covered)} pieces missing ({missing.size}{" "}

@@ -87,7 +87,6 @@ const TeamUp = ({ owner, required, partners }: TeamUpProps) => {
       </ol>
       <p className="text-sm text-muted-foreground">
         Picked one at a time: each adds the most of what is still missing.
-        {/* No one or two can, so three is the smallest. A bigger group might not be. */}
         {members.length > 3 && " A smaller group may exist."}
       </p>
     </div>
@@ -104,7 +103,6 @@ export const BuildTogether = async ({
   try {
     builders = await getBuilders();
   } catch {
-    // Partner data failing should not take the rest of the set page down with it.
     return (
       <section className="rounded-xl border bg-card p-5">
         <h2 className="text-[22px] font-bold">Build it together</h2>

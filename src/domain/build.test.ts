@@ -12,7 +12,6 @@ import {
 } from "./build";
 import { counts } from "./test-utils";
 
-// The example set from the brief: 4 × 3023 in Blue, 2 × 4286 in Red, 1 × 4286 in White.
 const set = counts(["3023", 7, 4], ["4286", 5, 2], ["4286", 1, 1]);
 const exactly = counts(["3023", 7, 4], ["4286", 5, 2], ["4286", 1, 1]);
 
@@ -104,7 +103,6 @@ describe("isOverHalfway", () => {
   });
 
   it("leaves out a set just under half", () => {
-    // 3 of 7 pieces is 43%.
     expect(isOverHalfway(buildStatus(set, counts(["3023", 7, 3])))).toBe(false);
   });
 
@@ -131,7 +129,6 @@ describe("isAlmostThere", () => {
 
 describe("coveredShare", () => {
   it("is the share of the set's pieces that are covered", () => {
-    // 4 of 7 pieces.
     expect(coveredShare(buildStatus(set, counts(["3023", 7, 4])))).toBe(4 / 7);
   });
 
@@ -152,14 +149,12 @@ describe("readyPercent", () => {
 
 describe("completionPercent", () => {
   it("rounds to the nearest whole percent", () => {
-    // 2 of 3 pieces is 66.7%.
     const status = buildStatus(counts(["3001", 1, 3]), counts(["3001", 1, 2]));
 
     expect(completionPercent(status)).toBe(67);
   });
 
   it("never shows 100 for a set that is not ready", () => {
-    // 999 of 1000 pieces is 99.9%, which would round up to 100.
     const status = buildStatus(
       counts(["3001", 1, 1000]),
       counts(["3001", 1, 999]),

@@ -10,8 +10,6 @@ export const findColourSwaps = (
 ): ReadonlyMap<ColourCode, ColourCode> | undefined => {
   const owned = piecesByColour(inventory).map(({ colourCode }) => colourCode);
 
-  // For each colour of the set, the owned colours with enough of every one of its pieces.
-  // Its own colour is tried first, so a colour that can stay usually does.
   const colours = linesByColour(required).map(({ colourCode, lines }) => ({
     from: colourCode,
     options: [
@@ -25,17 +23,15 @@ export const findColourSwaps = (
     ),
   }));
 
-  // Gives the colours a new colour one at a time, and steps back when a later colour has
-  // none left. A set has at most a handful of colours, so this stays fast.
   const assign = (chosen: Swap[]): Swap[] | undefined => {
     const colour = colours[chosen.length];
     if (!colour) {
-      return chosen; // every colour has one
+      return chosen;
     }
 
     for (const to of colour.options) {
       if (chosen.some(([, taken]) => taken === to)) {
-        continue; // another colour already became this one
+        continue;
       }
       const found = assign([...chosen, [colour.from, to]]);
       if (found) {

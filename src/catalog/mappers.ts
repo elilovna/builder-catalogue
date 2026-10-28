@@ -15,7 +15,7 @@ const toInventoryLines = (user: UserDetail): PieceLine[] => {
     item.variants.forEach((variant) => {
       lines.push({
         designId: item.pieceId,
-        colourCode: Number(variant.color), // the API sends "155", we use 155
+        colourCode: Number(variant.color),
         quantity: variant.count,
       });
     });

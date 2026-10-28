@@ -47,7 +47,7 @@ export const getBuilder = async (username: string): Promise<Builder | null> => {
   );
 
   if (lookup.kind === "absent") {
-    cacheLife("minutes"); // if this builder signs up, they show up soon
+    cacheLife("minutes");
     return null;
   }
   cacheLife("days");

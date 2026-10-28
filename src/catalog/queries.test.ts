@@ -6,11 +6,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getBuilder, getBuilders } from "./queries";
 import { UserDetailSchema } from "./schemas";
 
-// Outside Next.js there is no cache and no server/client split, so both are stubbed.
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ cacheLife: () => {}, cacheTag: () => {} }));
 
-// Every builder as /api/user/by-id/{id} returns them, recorded with `bun run fixtures:record`.
 const users = UserDetailSchema.array().parse(
   JSON.parse(
     readFileSync(
@@ -67,8 +65,7 @@ describe("getBuilders", () => {
     expect(builders.map((builder) => builder.username)).toEqual(
       users.map((user) => user.username),
     );
-    // /api/users already has the ids, so no builder is looked up by username first.
-    expect(requested).toHaveLength(12); // 1 list + 11 builders
+    expect(requested).toHaveLength(12);
     expect(requested[0]).toBe("/api/users");
   });
 });

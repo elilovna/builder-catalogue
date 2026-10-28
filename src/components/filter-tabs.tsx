@@ -28,7 +28,6 @@ export const FilterTabs = ({ label, tabs }: FilterTabsProps) => (
         aria-current={tab.current ? "page" : undefined}
         className={cn(
           "inline-flex h-11 flex-1 items-center justify-center gap-1 rounded-lg px-2 text-sm font-semibold whitespace-nowrap sm:flex-none sm:gap-2 sm:px-4 sm:text-base",
-          // High Contrast mode drops the dark fill, so the current tab takes the system's selection colours.
           tab.current
             ? "bg-primary text-primary-foreground forced-color-adjust-none forced-colors:bg-[Highlight] forced-colors:text-[HighlightText] forced-colors:outline-[CanvasText]"
             : "text-foreground/80 hover:bg-accent",

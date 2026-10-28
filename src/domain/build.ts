@@ -20,15 +20,14 @@ const getCoverage = (
   let covered = 0;
   const missing = new Map<PieceKey, number>();
 
-  // Look at the set one line at a time, e.g. key "3023:7", need 4.
   for (const [key, need] of required) {
-    const have = inventory.get(key) ?? 0; // how many the builder owns, 0 if none
+    const have = inventory.get(key) ?? 0;
 
     needed += need;
-    covered += Math.min(need, have); // extra pieces don't count beyond the need
+    covered += Math.min(need, have);
 
     if (have < need) {
-      missing.set(key, need - have); // remember how many are short
+      missing.set(key, need - have);
     }
   }
 
