@@ -1,22 +1,23 @@
 # Builder Catalogue
 
-Which sets can a builder complete with the pieces they already own? A Next.js app that answers this for every builder in the catalogue API, shows how close the other sets are, and answers all three stretch goals.
+**Live:** https://builder-catalogue-xi.vercel.app
 
-## The answer
+## Stack
 
-**brickfan35 can build 3 of the 15 sets: `car-wash`, `castaway` and `undersea-monster`.**
+Next.js 16 (App Router, Cache Components, React Compiler, typed routes), React 19, TypeScript in strict mode, Tailwind CSS 4, Zod, Vitest, Playwright with axe, ESLint and Biome, Bun, Vercel.
 
-See it at `/builders/brickfan35`. The test `can build car-wash, castaway and undersea-monster` in [`src/catalog/catalog.test.ts`](src/catalog/catalog.test.ts) pins it on recorded API data.
+## Pages
 
-| Stretch goal                                                            | Answer                                                          | Where                                             |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------- |
-| 1. Who can complete `tropical-island` together with `landscape-artist`? | **spaceman77**, the only builder who covers the whole gap alone | `/builders/landscape-artist/sets/tropical-island` |
-| 2. Largest collection that at least half the other builders could build | **618 pieces** (423 if megabuilder99 must also own them)        | `/community`                                      |
-| 3. New sets for `dr_crocodile` with colour swaps                        | **coffee-bar**, with 4 colour swaps                             | `/community?builder=dr_crocodile`                 |
+| Page                                                             | What it shows                                                                                     | Example                                                                                                                      |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `/`                                                              | Every builder, and how many sets each can build                                                   | [Builders](https://builder-catalogue-xi.vercel.app/)                                                                         |
+| `/builders/[username]?show=all\|ready\|half`                     | The sets a builder can build, and how close they are to the rest                                  | [brickfan35](https://builder-catalogue-xi.vercel.app/builders/brickfan35)                                                    |
+| `/builders/[username]/sets/[setName]?show=missing\|covered\|all` | The pieces still missing, and who could help finish the set                                       | [landscape-artist / tropical-island](https://builder-catalogue-xi.vercel.app/builders/landscape-artist/sets/tropical-island) |
+| `/community?builder=…&budget=others\|owned`                      | What a builder could design with pieces the others own, and which sets colour swaps would open up | [dr_crocodile](https://builder-catalogue-xi.vercel.app/community?builder=dr_crocodile)                                       |
 
-"Can build" means: for every line of the set (a design ID in a colour), the builder owns at least the quantity the set needs. Each set is judged on its own; building one does not use up pieces for another.
+A builder can build a set when they own every piece of it (a design ID in a colour) in at least the quantity the set needs. Each set is judged on its own, so building one does not use up pieces for another.
 
-## How to run
+## Running locally
 
 Needs Node 24 and Bun 1.4 (the exact version is in `packageManager` in `package.json`). Bun installs the packages and runs the scripts; the app, Vitest and Playwright run on Node.
 
@@ -26,20 +27,32 @@ bun run dev                    # http://localhost:3000
 bun run build && bun run start # production build
 ```
 
-| Command                   | What it does                                                                                                                                                                 |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bun run test`            | Vitest unit tests. They use recorded data and never call the live API. Not `bun test`, which is Bun's own test runner.                                                       |
-| `bun run typecheck`       | Generates the route types, then runs `tsc` in strict mode.                                                                                                                   |
-| `bun run lint`            | ESLint with the Next.js rules and `jsx-a11y` in strict mode.                                                                                                                 |
-| `bun run format:check`    | Biome: formatting and Tailwind class order.                                                                                                                                  |
-| `bun run test:e2e`        | Builds, then runs Playwright on the production build at desktop and phone size: the main journeys, the 404s and axe. The first time, run `bunx playwright install chromium`. |
-| `bun run fixtures:record` | Records the API into `test/fixtures/` again.                                                                                                                                 |
+| Command                   | What it does                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `bun run test`            | Vitest unit tests on recorded data. Not `bun test`, which is Bun's own test runner.                           |
+| `bun run typecheck`       | Generates the route types, then runs `tsc` in strict mode.                                                    |
+| `bun run lint`            | ESLint with the Next.js rules and `jsx-a11y` in strict mode.                                                  |
+| `bun run format:check`    | Biome: formatting and Tailwind class order.                                                                   |
+| `bun run test:e2e`        | Builds, then runs Playwright on the production build. The first time, run `bunx playwright install chromium`. |
+| `bun run fixtures:record` | Records the API into `test/fixtures/` again.                                                                  |
 
-`CATALOG_API_BASE_URL` is optional and defaults to `https://d30r5p5favh3z8.cloudfront.net`. The build prerenders pages with data from the live API, so `build` and `start` should use the same value.
+`CATALOG_API_BASE_URL` is optional and defaults to `https://d30r5p5favh3z8.cloudfront.net`.
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs install, typecheck, lint, format check, unit tests, build and the end-to-end tests on every push to `main` and every pull request.
+## Testing
 
-## How it works
+- **Unit tests** (Vitest) cover the domain logic and the API layer. They run on API data recorded in `test/fixtures/` and never call the live API. [`catalog.test.ts`](src/catalog/catalog.test.ts) checks every answer the brief asks for on that data.
+- **End-to-end tests** (Playwright) run on the production build at desktop and phone size: the main journeys, the 404 pages and their status, axe with the WCAG 2.0 to 2.2 A and AA rules, pages that fit 320, 375 and 412 px wide screens, and two keyboard-only journeys.
+- **CI** ([`ci.yml`](.github/workflows/ci.yml)) runs install, typecheck, lint, format check, unit tests, build and the end-to-end tests on every push to `main` and every pull request.
+
+## Deployment
+
+Vercel deploys every push to `main`, and gives each pull request a preview URL.
+
+- [`vercel.json`](vercel.json) installs with `bun install --frozen-lockfile`, and `package.json` pins Node 24, so a deploy uses the same packages and Node version as CI.
+- Production waits for the CI `check` job (Vercel Deployment Checks), so a commit that fails CI never goes live.
+- The build prerenders every builder and set page from the live API. If the API is down, the deploy fails and the previous version stays live. A cached page refreshes in the background at most once a day (`cacheLife("days")`).
+
+## Project structure
 
 ```
 src/
@@ -49,10 +62,3 @@ src/
 ├─ components/  presentational components with plain props (ui/ holds the shadcn primitives)
 └─ lib/         formatting, brick colours, cn()
 ```
-
-| Route                                                   | Question it answers                                            |
-| ------------------------------------------------------- | -------------------------------------------------------------- |
-| `/`                                                     | Who are the builders, and how many sets can each build?        |
-| `/builders/[username]?show=all\|ready\|half`            | Which sets can this builder build, and how close are the rest? |
-| `/builders/[username]/sets/[setName]?show=missing\|all` | Which pieces are missing, and who could help?                  |
-| `/community?builder=…&budget=others\|owned`             | Stretch goals 2 and 3, for any builder                         |
